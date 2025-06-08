@@ -1,0 +1,96 @@
+/* ===== Print Styles ===== */
+@media print {
+  /* Hide unnecessary elements */
+  .app-header,
+  .admin-panel,
+  .comments-section,
+  .pdf-actions,
+  .search-container,
+  .tabs,
+  .app-footer,
+  .notification {
+    display: none !important;
+  }
+
+  /* Reset body styles */
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Main container adjustments */
+  .app-container {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* PDF preview styling */
+  .pdf-preview-container {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .pdf-preview {
+    height: 95vh !important;
+    border: none !important;
+    page-break-inside: avoid;
+  }
+
+  /* PDF meta information */
+  .pdf-meta-info {
+    margin-top: 1rem;
+    font-size: 10pt;
+    color: #666;
+  }
+
+  /* Links */
+  a {
+    color: black !important;
+    text-decoration: none !important;
+  }
+
+  /* Hide interactive elements */
+  .icon-button,
+  .action-button,
+  .star,
+  .comment-form,
+  .drop-zone,
+  .upload-progress-container {
+    display: none !important;
+  }
+
+  /* Ensure content doesn't break awkwardly */
+  .pdf-grid {
+    display: block !important;
+  }
+
+  .pdf-item {
+    page-break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+
+  /* Footer for printed pages */
+  @page {
+    margin: 1cm;
+  }
+
+  @page :first {
+    margin-top: 0;
+  }
+
+  @page :left {
+    margin-left: 1.5cm;
+    margin-right: 0.5cm;
+  }
+
+  @page :right {
+    margin-left: 0.5cm;
+    margin-right: 1.5cm;
+  }
+}
