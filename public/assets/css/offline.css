@@ -1,0 +1,89 @@
+/* ===== Offline Styles ===== */
+.offline-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #e74c3c;
+  color: white;
+  padding: 12px;
+  text-align: center;
+  z-index: 1000;
+  animation: slideDown 0.3s ease-out;
+  font-size: var(--font-size-sm);
+}
+
+[data-theme="dark"] .offline-banner {
+  background: #c0392b;
+}
+
+/* Offline PDF list item style */
+.pdf-item.offline {
+  opacity: 0.7;
+  position: relative;
+}
+
+.pdf-item.offline::after {
+  content: "Available offline";
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: #3498db;
+  color: white;
+  font-size: 10px;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+/* Offline content warning */
+.offline-content-warning {
+  background: var(--color-bg-secondary);
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-md);
+  text-align: center;
+  color: var(--color-text-light);
+}
+
+/* Offline-specific buttons */
+.offline-button {
+  background: var(--color-bg-secondary);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.offline-button:hover {
+  background: var(--color-bg);
+}
+
+/* Offline loading state */
+.offline-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-xl);
+  color: var(--color-text-light);
+}
+
+/* Animations */
+@keyframes slideDown {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .offline-banner {
+    font-size: var(--font-size-xs);
+    padding: 8px;
+  }
+
+  .pdf-item.offline::after {
+    font-size: 8px;
+    padding: 1px 3px;
+  }
+}
