@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A Progressive Web App for managing and viewing PDF documents">
+  <title>PDF Hub Pro</title>
+  
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#3498db">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="/manifest.json">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-content">
+      <h1 data-i18n="title">PDF Hub Pro</h1>
+      <div class="header-controls">
+        <select id="languageSelect" class="language-selector">
+          <option value="en">English</option>
+          <option value="id">Bahasa Indonesia</option>
+        </select>
+        <button id="darkModeToggle" class="icon-button" data-i18n="darkMode" aria-label="Toggle dark mode">
+          <span class="icon">🌓</span>
+          <span class="text">Dark Mode</span>
+        </button>
+        <button id="adminToggle" class="icon-button" data-i18n="adminMode" aria-label="Toggle admin mode">
+          <span class="icon">🔒</span>
+          <span class="text">Admin Mode</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="admin-panel" id="adminPanel">
+    <h3 class="admin-title">🔧 Admin Panel</h3>
+    <div id="dropZone" class="drop-zone">
+      <p class="drop-zone-text" data-i18n="uploadText">Drop PDFs here or click to upload</p>
+      <input type="file" id="fileInput" class="file-input" accept=".pdf" multiple>
+      <div class="upload-progress-container">
+        <progress id="uploadProgress" class="upload-progress" value="0" max="100"></progress>
+        <span id="uploadPercentage" class="upload-percentage">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <main class="app-container">
+    <div class="controls-section">
+      <div class="tabs">
+        <button class="tab active" data-category="all" data-i18n="all">All</button>
+        <button class="tab" data-category="tutorial" data-i18n="tutorials">Tutorials</button>
+        <button class="tab" data-category="cheatsheet" data-i18n="cheatsheets">Cheatsheets</button>
+      </div>
+      
+      <div class="search-container">
+        <input type="text" id="search" class="search-bar" data-i18n="searchPlaceholder" placeholder="🔍 Search PDFs...">
+      </div>
+    </div>
+
+    <div class="content-section">
+      <section class="pdf-list-section">
+        <ul id="pdf-list" class="pdf-grid"></ul>
+      </section>
+
+      <section class="pdf-preview-section">
+        <div id="pdf-preview-container" class="pdf-preview-container">
+          <h3 class="preview-title" data-i18n="preview">🖥 Preview</h3>
+          <div id="pdf-preview" class="pdf-preview"></div>
+          <div class="pdf-actions">
+            <button id="downloadBtn" class="action-button download-btn" data-i18n="download">
+              <span class="icon">⬇️</span>
+              <span class="text">Download</span>
+            </button>
+            <button id="shareBtn" class="action-button share-btn" data-i18n="share">
+              <span class="icon">🔗</span>
+              <span class="text">Share</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="commentsSection" class="comments-section">
+          <h3 class="comments-title" data-i18n="comments">💬 Comments</h3>
+          <div id="commentsList" class="comments-list"></div>
+          
+          <div class="comment-form">
+            <textarea id="commentInput" class="comment-input" placeholder="Add your comment..." data-i18n-placeholder="addComment"></textarea>
+            <div class="rating-container">
+              <span class="rating-label" data-i18n="rating">Rating:</span>
+              <div class="stars">
+                <span class="star" data-rating="1">★</span>
+                <span class="star" data-rating="2">★</span>
+                <span class="star" data-rating="3">★</span>
+                <span class="star" data-rating="4">★</span>
+                <span class="star" data-rating="5">★</span>
+              </div>
+            </div>
+            <button id="postCommentBtn" class="post-comment-btn" data-i18n="postComment">Post Comment</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <p>© 2023 PDF Hub Pro | <a href="/privacy.html" data-i18n="privacy">Privacy Policy</a></p>
+  </footer>
+
+  <!-- Firebase SDK -->
+  <script type="module" src="/assets/js/firebase-config.js"></script>
+  
+  <!-- App Scripts -->
+  <script type="module" src="/assets/js/translations.js"></script>
+  <script type="module" src="/assets/js/script.js"></script>
+  
+  <!-- Register Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/serviceWorker.js')
+          .then(registration => {
+            console.log('ServiceWorker registration successful');
+          })
+          .catch(err => {
+            console.log('ServiceWorker registration failed: ', err);
+          });
+      });
+    }
+  </script>
+</body>
+</html>
