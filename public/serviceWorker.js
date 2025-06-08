@@ -41,3 +41,24 @@ self.addEventListener('activate', (event) => {
 
 // Fetch strategy: Network first, fallback to cache
 self.addEventListener('fetch', (event) => {
+  if (event.request.url.includes('/pdfs/')) {
+    // Cache PDFs with cache-first strategy
+    event.respondWith(
+      caches.match(event.request).then(cachedResponse => {
+        return cachedResponse || fetch(event.request).then(response => {
+          return caches.open(RUNTIME_CACHE).then(cache => {
+            cache.put(event.request, response.clone());
+            return response;
+          });
+        });
+      })
+    );
+  } else {
+    // Network first for other assets
+    event.respondWith(
+      fetch(event.request).catch(() => {
+        return caches.match(event.request);
+      })
+    );
+  }
+});
