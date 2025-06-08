@@ -22,5 +22,12 @@ A Progressive Web App for managing and viewing PDF documents with Firebase integ
    cd pdf-hub-pro
 
 2. Install dependencies: 
-```bash
-npm install
+   ```bash
+   npm install
+
+3.Create a Firebase project and update config in:
+    src/js/firebase-config.js
+
+4.Run development server:
+   ```bash
+   npm start
