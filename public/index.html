@@ -3,133 +3,120 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A Progressive Web App for managing and viewing PDF documents">
-  <title>PDF Hub Pro</title>
-  
-  <!-- PWA Meta Tags -->
+  <meta name="description" content="PDF Hub Pro - Professional PDF Management System">
   <meta name="theme-color" content="#3498db">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="manifest" href="/manifest.json">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.webmanifest">
   
   <!-- Favicon -->
-  <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon">
-  <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+  <link rel="icon" href="/assets/favicons/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png">
+  
+  <!-- Security Headers -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.firebaseio.com;">
+  
+  <title>PDF Hub Pro</title>
+  
+  <!-- Preload Critical Resources -->
+  <link rel="preload" href="/assets/fonts/roboto.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/css/main.css" as="style">
+  <link rel="preload" href="/assets/js/main.js" as="script">
   
   <!-- CSS -->
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
   
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
 </head>
 <body>
-  <header class="app-header">
-    <div class="header-content">
-      <h1 data-i18n="title">PDF Hub Pro</h1>
-      <div class="header-controls">
-        <select id="languageSelect" class="language-selector">
-          <option value="en">English</option>
-          <option value="id">Bahasa Indonesia</option>
-        </select>
-        <button id="darkModeToggle" class="icon-button" data-i18n="darkMode" aria-label="Toggle dark mode">
-          <span class="icon">🌓</span>
-          <span class="text">Dark Mode</span>
-        </button>
-        <button id="adminToggle" class="icon-button" data-i18n="adminMode" aria-label="Toggle admin mode">
-          <span class="icon">🔒</span>
-          <span class="text">Admin Mode</span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <div class="admin-panel" id="adminPanel">
-    <h3 class="admin-title">🔧 Admin Panel</h3>
-    <div id="dropZone" class="drop-zone">
-      <p class="drop-zone-text" data-i18n="uploadText">Drop PDFs here or click to upload</p>
-      <input type="file" id="fileInput" class="file-input" accept=".pdf" multiple>
-      <div class="upload-progress-container">
-        <progress id="uploadProgress" class="upload-progress" value="0" max="100"></progress>
-        <span id="uploadPercentage" class="upload-percentage">0%</span>
-      </div>
+  <!-- Offline Status Banner -->
+  <div id="offline-banner" class="offline-banner hidden" aria-live="polite">
+    <div class="offline-content">
+      <span class="offline-icon">⚠️</span>
+      <span class="offline-message">You are currently offline. Some features may be limited.</span>
+      <button id="reload-btn" class="retry-btn">Retry Connection</button>
     </div>
   </div>
 
-  <main class="app-container">
-    <div class="controls-section">
-      <div class="tabs">
-        <button class="tab active" data-category="all" data-i18n="all">All</button>
-        <button class="tab" data-category="tutorial" data-i18n="tutorials">Tutorials</button>
-        <button class="tab" data-category="cheatsheet" data-i18n="cheatsheets">Cheatsheets</button>
+  <!-- App Shell -->
+  <div id="app-shell">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-container">
+        <h1 class="app-logo">
+          <img src="/assets/images/logo.svg" alt="PDF Hub Pro" width="150" height="40">
+        </h1>
+        
+        <div class="header-controls">
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <span class="theme-icon light-icon">☀️</span>
+            <span class="theme-icon dark-icon hidden">🌙</span>
+          </button>
+          
+          <button id="auth-btn" class="auth-btn">Sign In</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="app-main">
+      <div class="sidebar">
+        <nav class="main-nav">
+          <ul>
+            <li><a href="/dashboard" class="nav-link active">Dashboard</a></li>
+            <li><a href="/pdfs" class="nav-link">My PDFs</a></li>
+            <li><a href="/shared" class="nav-link">Shared Files</a></li>
+            <li><a href="/settings" class="nav-link">Settings</a></li>
+          </ul>
+        </nav>
       </div>
       
-      <div class="search-container">
-        <input type="text" id="search" class="search-bar" data-i18n="searchPlaceholder" placeholder="🔍 Search PDFs...">
+      <div class="content-area" id="content-area">
+        <!-- Dynamic content will be injected here -->
+        <div class="loading-spinner">
+          <div class="spinner"></div>
+          <p>Loading PDF Hub Pro...</p>
+        </div>
       </div>
+    </main>
+  </div>
+
+  <!-- NoScript Fallback -->
+  <noscript>
+    <div class="noscript-warning">
+      <h2>JavaScript is Disabled</h2>
+      <p>PDF Hub Pro requires JavaScript to function properly. Please enable JavaScript in your browser settings.</p>
     </div>
+  </noscript>
 
-    <div class="content-section">
-      <section class="pdf-list-section">
-        <ul id="pdf-list" class="pdf-grid"></ul>
-      </section>
-
-      <section class="pdf-preview-section">
-        <div id="pdf-preview-container" class="pdf-preview-container">
-          <h3 class="preview-title" data-i18n="preview">🖥 Preview</h3>
-          <div id="pdf-preview" class="pdf-preview"></div>
-          <div class="pdf-actions">
-            <button id="downloadBtn" class="action-button download-btn" data-i18n="download">
-              <span class="icon">⬇️</span>
-              <span class="text">Download</span>
-            </button>
-            <button id="shareBtn" class="action-button share-btn" data-i18n="share">
-              <span class="icon">🔗</span>
-              <span class="text">Share</span>
-            </button>
-          </div>
+  <!-- App Initialization -->
+  <script>
+    // Check browser compatibility
+    if (!('serviceWorker' in navigator) || !('indexedDB' in window)) {
+      document.getElementById('content-area').innerHTML = `
+        <div class="browser-warning">
+          <h2>Unsupported Browser</h2>
+          <p>Your browser doesn't support all required features. Please use a modern browser like Chrome, Firefox, or Edge.</p>
         </div>
+      `;
+    }
+  </script>
 
-        <div id="commentsSection" class="comments-section">
-          <h3 class="comments-title" data-i18n="comments">💬 Comments</h3>
-          <div id="commentsList" class="comments-list"></div>
-          
-          <div class="comment-form">
-            <textarea id="commentInput" class="comment-input" placeholder="Add your comment..." data-i18n-placeholder="addComment"></textarea>
-            <div class="rating-container">
-              <span class="rating-label" data-i18n="rating">Rating:</span>
-              <div class="stars">
-                <span class="star" data-rating="1">★</span>
-                <span class="star" data-rating="2">★</span>
-                <span class="star" data-rating="3">★</span>
-                <span class="star" data-rating="4">★</span>
-                <span class="star" data-rating="5">★</span>
-              </div>
-            </div>
-            <button id="postCommentBtn" class="post-comment-btn" data-i18n="postComment">Post Comment</button>
-          </div>
-        </div>
-      </section>
-    </div>
-  </main>
-
-  <footer class="app-footer">
-    <p>© 2023 PDF Hub Pro | <a href="/privacy.html" data-i18n="privacy">Privacy Policy</a></p>
-  </footer>
-
-  <!-- Firebase SDK -->
-  <script type="module" src="/assets/js/firebase-config.js"></script>
+  <!-- Load the app script asynchronously -->
+  <script src="/assets/js/main.js" async defer></script>
   
-  <!-- App Scripts -->
-  <script type="module" src="/assets/js/translations.js"></script>
-  <script type="module" src="/assets/js/script.js"></script>
-  
-  <!-- Register Service Worker -->
+  <!-- Initialize service worker -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/serviceWorker.js')
+        navigator.serviceWorker.register('/sw.js')
           .then(registration => {
-            console.log('ServiceWorker registration successful');
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
           })
           .catch(err => {
             console.log('ServiceWorker registration failed: ', err);
